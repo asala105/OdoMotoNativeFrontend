@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "580424300991",
+    "project_id": "odomoto-8cb72",
+    "storage_bucket": "odomoto-8cb72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580424300991:android:db3d3ba4f31f78d646490a",
+        "android_client_info": {
+          "package_name": "odo.moto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580424300991-p86mcmlhn7r6jurb7lla6su97g72l29q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDehT-HmFFobrvVTzqPNRky6ihIYEJC4uE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580424300991-p86mcmlhn7r6jurb7lla6su97g72l29q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

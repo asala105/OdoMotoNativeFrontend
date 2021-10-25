@@ -17,9 +17,13 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "odo.moto",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true
     },
     "android": {
+      "package": "odo.moto",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -27,6 +31,17 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/path/to/myNotificationIcon.png",
+          "color": "#ffffff",
+          "sounds": ["./local/path/to/mySound.wav", "./local/path/to/myOtherSound.wav"],
+          "mode": "production"
+        }
+      ]
+    ]
   }
 }
