@@ -1,13 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, ScrollView, ImageBackground, Dimensions, Image, Item, TextInput, Button, Pressable } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ImageBackground, Dimensions, Image, Item, TextInput, Button, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import api from '../../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { colors } from "../../constants/palette";
-import { color } from 'react-native-reanimated';
-import Logo from '../../components/Logo'
+import Logo from '../../components/Logo';
 
 export default function Login({navigation}) {
   const [userEmail, setUserEmail] = useState('');
@@ -64,9 +63,9 @@ export default function Login({navigation}) {
             <View style={{ padding: 20, height : 420}}>
                 <Text style={{ color: colors.text, fontSize: 24,fontWeight:'bold' }}>Welcome</Text>
                 <Text>Forgot your password?
-                <Pressable onPress ={()=>navigation.navigate("Reset Password")}>
+                <TouchableOpacity onPress ={()=>navigation.navigate("Reset Password")}>
                     <Text style={{ color: colors.text, fontStyle: 'italic' }}>  Reset Here</Text>
-                </Pressable>
+                </TouchableOpacity>
                 </Text>
                 <View style={{ marginTop: 30 }}>
                     <Text style={{ color: colors.text, fontSize: 14, fontWeight: 'normal',marginBottom:10 }}> <Icon name="user" style={{ fontSize: 16 }} />  Email address</Text>
@@ -80,9 +79,9 @@ export default function Login({navigation}) {
                 </View>
                 {/* Button */}
                 <View style={styles.buttonView}>            
-                    <Pressable style={styles.button} onPress={handleLogin}>
+                    <TouchableOpacity style={styles.button} onPress={handleLogin}>
                         <Text style={styles.btntext}>Login</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>

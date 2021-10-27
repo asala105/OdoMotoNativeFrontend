@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, ScrollView, ImageBackground, Dimensions, Image, Item, TextInput, Button, Pressable } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Header from '../../components/Header/Header';
 import Notification from '../../components/Notification';
 import { colors } from "../../constants/palette";
 //import api from '../api';
@@ -30,6 +31,7 @@ export default function Notifications() {
 
     return (
         <ScrollView style={styles.container}>
+          <Header title="Notifications"/>
             <FlatList
                 style={styles.notificationList}
                 data={notifications}

@@ -1,11 +1,21 @@
 import React from 'react'
-import {Text, View} from 'react-native'
-import MyCalendar from '../../components/calendar/Calendar'
+import {Text, View, StyleSheet} from 'react-native'
+import Header from '../../components/Header/Header'
+import { colors } from '../../constants/palette'
+import SwitchingButton from '../../components/SwitchingButton.js/SwitchingButton'
 
-export default function AttendanceScreen() {
-    return (<View style={{ padding: 20, flex: 1, height: 200, alignItems:'center' }}>
-<Text>Attendance Screen</Text>
-{/* <MyCalendar/> */}
-</View>
+export default function AttendanceScreen({navigation}) {
+    return (
+    <View style={styles.container}>
+        <Header title="Attendance"/>
+        <SwitchingButton nav={navigation} current={1}/>
+        <Text>Attendance Screen</Text>
+    </View>
     )
 }
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: colors.card_background,
+    },
+})
+

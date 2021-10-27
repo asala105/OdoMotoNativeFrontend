@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
-import { Modal,FlatList, StyleSheet, Text, View, ScrollView, ImageBackground, Dimensions, Image, Item, TextInput, Button, Pressable } from 'react-native';
+import { Modal,FlatList, StyleSheet, Text, View, ScrollView, ImageBackground, Dimensions, Image, Item, TextInput, TouchableOpacity } from 'react-native';
 import { colors } from "../../constants/palette";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Header from '../../components/Header/Header'
+import Button from '../../components/Button/Button'
 
 let items = [
     {from:'loc1', to:'loc2'},
@@ -10,9 +12,20 @@ let items = [
 ]
 export default function HomeScreen() {
     const [modalVisible, setModalVisible] = useState(false);
+    const [userType, setUserType] = useState(4);
 
+    function handleCancel(){
+        console.log('cancel')
+    }
+    function handleRequest(){
+        console.log('Request')
+    }
+    function handleRecord(){
+        console.log('Record')
+    }
     return (<>
         <ScrollView style={styles.container}>
+            <Header title='Home'/>
             <View style={styles.notificationBox}>
                 <Text style={styles.title}>Movement Plan</Text>
                 <View style={styles.row}>
@@ -42,22 +55,14 @@ export default function HomeScreen() {
                         </View>
                     )
                 }} />                
-                <View style={styles.buttonView}>            
-                    <Pressable style={styles.button}>
-                        <Text style={styles.btntext}>Cancel Movement Plan</Text>
-                    </Pressable>
-                </View>
+                <Button text="Cancel Movement Plan" callback={handleCancel}/>
             </View>
-            <View style={styles.buttonView}>            
-                <Pressable style={styles.button} onPress={() => setModalVisible(true)}>
-                    <Text style={styles.btntext}>Request New Movement</Text>
-                </Pressable>
+            <View>
+                {userType===3?
+                <Button text="Record Fuel And Odometer" callback={handleRecord}/>:
+                <Button text="Request New Movement Plan" callback={handleRequest}/>}
             </View>
-            <View style={styles.buttonView}>            
-                <Pressable style={styles.button}>
-                    <Text style={styles.btntext}>Record Fuel and Odometer</Text>
-                </Pressable>
-            </View>
+                
         </ScrollView>
         </>
     )
@@ -74,9 +79,9 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     notificationBox: {
-        marginHorizontal: 10,
+        marginHorizontal: 5,
         padding:20,
-        marginTop:50,
+        marginTop:20,
         marginBottom:5,
         backgroundColor: colors.background,
         flexDirection: 'column',

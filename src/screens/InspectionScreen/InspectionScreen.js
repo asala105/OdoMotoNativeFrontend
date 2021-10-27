@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
-import {View, Pressable, StyleSheet, Text, Modal} from 'react-native'
+import {View, TouchableOpacity, StyleSheet, Text, Modal} from 'react-native'
+import Header from '../../components/Header/Header';
 import InspectionForm from '../../components/InspectionForm/InspectionForm';
 import LeaveRequestForm from '../../components/LeaveRequest/LeaveRequestForm';
 import { colors } from '../../constants/palette';
@@ -7,19 +8,8 @@ import { colors } from '../../constants/palette';
 export default function InspectionScreen() {
     const [visible, setVisible] = useState(false);
     return (
-        <View>
-        <View style={styles.buttonView}>
-            <Modal animationType='slide' transparent={true} visible={visible} style={{ marginTop:30 }}>
-                <InspectionForm/>
-                <Text onPress={()=>{setVisible(!visible);}}>Close</Text>
-            </Modal>        
-            <Pressable style={styles.button} onPress={()=>{setVisible(true)}}>
-
-                <Text style={styles.btntext}>Request A Leave</Text>
-            
-            </Pressable>
-            {/* <LeaveRequestForm/> */}
-        </View>
+    <View style={styles.container}>
+        <Header title="Inspection"/>
     </View>
 )
 }

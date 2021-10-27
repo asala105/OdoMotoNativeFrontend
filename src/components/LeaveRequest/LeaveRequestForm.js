@@ -1,73 +1,82 @@
 import DatePicker from 'react-native-datepicker'
 import React, {useState} from 'react'
-import {View, StyleSheet, Text, Dimensions, TextInput, Pressable} from 'react-native'
+import {View, StyleSheet, Text, Dimensions, TextInput, TouchableOpacity} from 'react-native'
 import { colors } from '../../constants/palette';
 
+
 export default function LeaveRequestForm() {
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setendDate] = useState(new Date());
-    return (
-        <View>
-             <Text style={{ color: colors.text, fontSize: 14, fontWeight: 'normal',marginBottom:10 }}> Starting from</Text>
-            <DatePicker
-        style={{width: 200}}
-        date={startDate}
-        mode="date"
-        placeholder="starting date"
-        format="YYYY-MM-DD"
-        minDate={startDate}
-        maxDate={startDate.getDate() + 10}
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        customStyles={{
-          dateIcon: {
-            position: 'absolute',
-            left: 0,
-            top: 4,
-            marginLeft: 0
-          },
-          dateInput: {
-            marginLeft: 36
-          }
-          // ... You can check the source to find the other keys.
-        }}
-        onDateChange={(date) => {this.setState({date: date})}}
-      />
-       <Text style={{ color: colors.text, fontSize: 14, fontWeight: 'normal',marginBottom:10 }}> Till</Text>
-      <DatePicker
-        style={{width: 200}}
-        date={endDate}
-        mode="date"
-        placeholder="ending date"
-        format="YYYY-MM-DD"
-        minDate={endDate}
-        maxDate={endDate.getDate() + 10}
-        confirmBtnText="Confirm"
-        cancelBtnText="Cancel"
-        customStyles={{
-          dateIcon: {
-            position: 'absolute',
-            left: 0,
-            top: 4,
-            marginLeft: 0
-          },
-          dateInput: {
-            marginLeft: 36
-          }
-          // ... You can check the source to find the other keys.
-        }}
-        onDateChange={(date) => {this.setState({date: date})}}
-      />
-      <Text style={{ color: colors.text, fontSize: 14, fontWeight: 'normal',marginBottom:10 }}> Leave Type</Text>
-    <TextInput  placeholder=' Enter the leave type here' keyboardType='email-address' style={styles.inputs} onChangeText={(email)=>{setUserEmail(email)}}></TextInput>
-                    <View style={styles.buttonView}>            
-                    <Pressable style={styles.button}>
-                        <Text style={styles.btntext}>Send Request</Text>
-                    </Pressable>
-                </View>
-            
-        </View>
-    )
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setendDate] = useState(new Date());
+  
+  return (
+    <View>
+
+      <View style={styles.row}>
+        <Text style={styles.formLabel}> Starting from</Text>
+        <DatePicker
+          style={{width: "65%"}}
+          date={startDate}
+          mode="date"
+          placeholder="starting date"
+          format="YYYY-MM-DD"
+          minDate={startDate}
+          maxDate={startDate.getDate() + 10}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: 'absolute',
+              left: 0,
+              top: 4,
+              marginLeft: 0
+            },
+            dateInput: {
+              marginLeft: 36
+            }
+            // ... You can check the source to find the other keys.
+          }}
+          onDateChange={(date) => {this.setState({date: date})}}
+        />
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.formLabel}> Till</Text>
+        <DatePicker
+          style={{width: "65%"}}
+          date={endDate}
+          mode="date"
+          placeholder="ending date"
+          format="YYYY-MM-DD"
+          minDate={endDate}
+          maxDate={endDate.getDate() + 10}
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: 'absolute',
+              left: 0,
+              top: 4,
+              marginLeft: 0
+            },
+            dateInput: {
+              marginLeft: 36
+            }
+            // ... You can check the source to find the other keys.
+          }}
+          onDateChange={(date) => {this.setState({date: date})}}
+        />
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.formLabel}> Leave Type</Text>
+        <TextInput  placeholder=' Enter the leave type here' keyboardType='email-address' style={styles.inputs}></TextInput>
+                    
+      </View>
+      <View style={styles.buttonView}>            
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.btntext}>Send Request</Text>
+        </TouchableOpacity>
+      </View>      
+    </View>
+  )
 }
 
 
@@ -93,7 +102,6 @@ const styles = StyleSheet.create({
     },
   
     bottomView: {
-      flex: 1.5,
       backgroundColor: colors.background,
       bottom: 0,
       marginTop: 20,
@@ -137,4 +145,16 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       fontSize: 14,
     },
+    row:{
+      marginTop:5,
+      marginBottom:5,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+  },
+  formLabel:{
+    color: colors.text,
+    fontSize: 18,
+    fontWeight: 'normal',
+    marginBottom:10
+  }
   });

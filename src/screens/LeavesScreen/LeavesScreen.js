@@ -1,25 +1,47 @@
-import React, {useState} from 'react'
-import {View, Pressable, StyleSheet, Text, Modal} from 'react-native'
+import React, {useState, useRef} from 'react'
+import {View, StyleSheet, Text, Modal, TouchableOpacity, ScrollView} from 'react-native'
 import LeaveRequestForm from '../../components/LeaveRequest/LeaveRequestForm';
 import { colors } from '../../constants/palette';
- 
-export default function LeavesScreen() {
-    const [visible, setVisible] = useState(false);
-    return (
-        <View>
-            <View style={styles.buttonView}>
-                <Modal animationType='slide' transparent={true} visible={visible} style={{ marginTop:30 }}>
-                    <LeaveRequestForm/>
-                    <Text onPress={()=>{setVisible(!visible);}}>Close</Text>
-                </Modal>        
-                <Pressable style={styles.button} onPress={()=>{setVisible(true)}}>
+import { Modalize } from 'react-native-modalize';
+import { Portal } from 'react-native-portalize';
+import MyCalendar from '../../components/Calendar/Calendar';
+import SwitchingButton from '../../components/SwitchingButton.js/SwitchingButton'
+import Header from '../../components/Header/Header';
+import Button from '../../components/Button/Button';
 
-                    <Text style={styles.btntext}>Request A Leave</Text>
-                
-                </Pressable>
-                {/* <LeaveRequestForm/> */}
+export default function LeavesScreen({navigation}) {
+    const [value, onChange] = useState(new Date());
+    const [date, setDate] = useState();
+    const modalizeRef = useRef(null);
+
+    const onOpen = () => {
+        modalizeRef.current?.open();
+    };
+    return (
+        <ScrollView style={styles.container}>
+            <Header title="Leaves"/>
+            <SwitchingButton nav={navigation} current={2}/>
+            <View style={{marginTop:-30}}>
+                <MyCalendar/>
             </View>
-        </View>
+            <View>
+                <Portal>
+                    <Modalize ref={modalizeRef} style={{ backgroundColor: colors.card_background}}>
+                    <View style={{margin:15}}>
+                        <View style={{ padding: 20, flexDirection:'row', justifyContent: 'space-between'}}>
+                            <View>
+                                <Text style={styles.title}>Request A Leave</Text>
+                            </View> 
+                        </View>
+                        <View>
+                        <LeaveRequestForm/>
+                        </View>
+                        </View>
+                    </Modalize>
+                </Portal>
+                <Button text="Request A Leave" callback={onOpen}/>
+            </View>
+        </ScrollView>
     )
 }
 const styles = StyleSheet.create({
@@ -68,7 +90,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingVertical: 12,
         paddingHorizontal: '20%',
-        borderRadius: 10,
+        borderRadius: 15,
         elevation: 4,
         backgroundColor: colors.teal,
         marginTop : 15,

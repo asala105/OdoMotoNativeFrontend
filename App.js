@@ -33,7 +33,7 @@ const App = () => {
 
 
   return (
-    <AuthNav />
+    <BottomNav />
   );
 }
 export default App;

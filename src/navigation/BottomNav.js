@@ -8,16 +8,20 @@ import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../constants/palette';
 import LeavesScreen from '../screens/LeavesScreen/LeavesScreen';
+import { Host, Portal } from 'react-native-portalize';
+import AttendanceNav from './AttendanceNav';
 const Tab = createMaterialBottomTabNavigator();
 
 function BottomNav() {
   return (
 <NavigationContainer>
+  <Host>
     <Tab.Navigator
       initialRouteName="Home"
       activeColor= {colors.card_background}
       inactiveColor={colors.darker_teal}
-      barStyle={{ backgroundColor: colors.teal }}>
+      barStyle={{ backgroundColor: colors.teal,}}
+      >
       <Tab.Screen name="Home" component={HomeScreen} 
               options={{
                 tabBarLabel: 'Home',
@@ -33,7 +37,7 @@ function BottomNav() {
           <MaterialCommunityIcons name="bell" color={color} size={26} />
         ),
       }}/>
-      <Tab.Screen name="Attendance" component={LeavesScreen} 
+      <Tab.Screen name="Attendance" component={AttendanceNav} 
               options={{
                 tabBarLabel: 'Attendance',
                 tabBarIcon: ({ color }) => (
@@ -56,6 +60,7 @@ function BottomNav() {
                 ),
               }}/>
     </Tab.Navigator>
+    </Host>
     </NavigationContainer>
   );
 }

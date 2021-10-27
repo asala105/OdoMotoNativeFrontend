@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, ScrollView, ImageBackground, Dimensions, Image, Item, TextInput, Button, Pressable } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ImageBackground, Dimensions, Image, Item, TextInput, Button, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import api from '../../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -55,9 +55,9 @@ export default function Login({navigation}) {
                 </View>
                 {/* Button */}
                 <View style={styles.buttonView}>            
-                    <Pressable style={styles.button} onPress={handlePasswordReset}>
+                    <TouchableOpacity style={styles.button} onPress={handlePasswordReset}>
                         <Text style={styles.btntext}>Login</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
