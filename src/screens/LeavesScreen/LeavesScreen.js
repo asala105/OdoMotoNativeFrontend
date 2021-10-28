@@ -1,5 +1,5 @@
 import React, {useState, useRef} from 'react'
-import {View, StyleSheet, Text, Modal, TouchableOpacity, ScrollView} from 'react-native'
+import {View, StyleSheet, Text} from 'react-native'
 import LeaveRequestForm from '../../components/LeaveRequest/LeaveRequestForm';
 import { colors } from '../../constants/palette';
 import { Modalize } from 'react-native-modalize';
@@ -18,7 +18,7 @@ export default function LeavesScreen({navigation}) {
         modalizeRef.current?.open();
     };
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <Header title="Leaves"/>
             <SwitchingButton nav={navigation} current={2}/>
             <View style={{marginTop:-30}}>
@@ -41,7 +41,7 @@ export default function LeavesScreen({navigation}) {
                 </Portal>
                 <Button text="Request A Leave" callback={onOpen}/>
             </View>
-        </ScrollView>
+        </View>
     )
 }
 const styles = StyleSheet.create({

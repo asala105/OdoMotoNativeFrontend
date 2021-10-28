@@ -1,17 +1,49 @@
-import React, {useState} from 'react'
-import {View, TouchableOpacity, StyleSheet, Text, Modal} from 'react-native'
-import Header from '../../components/Header/Header';
-import InspectionForm from '../../components/InspectionForm/InspectionForm';
-import LeaveRequestForm from '../../components/LeaveRequest/LeaveRequestForm';
+import React, {useState, useRef} from 'react';
+import {View, StyleSheet, Text, Modal, TouchableOpacity, ScrollView, FlatList} from 'react-native';
 import { colors } from '../../constants/palette';
+import { Modalize } from 'react-native-modalize';
+import { Portal } from 'react-native-portalize';
+import MyCalendar from '../../components/Calendar/Calendar';
+import Header from '../../components/Header/Header';
+import InspectionTask from '../../components/InspecionTask/InspectionTask';
 
-export default function InspectionScreen() {
-    const [visible, setVisible] = useState(false);
+const tasks = [
+    {title:'Safety Check', date:'2021-10-28', status:'In progress'},
+    {title:'Maintenance', date:'2021-10-28', status:'Done'},
+    {title:'Safety Check', date:'2021-10-28', status:'In progress'}
+]
+
+export default function InspectionScreen({navigation}) {
+    const [value, onChange] = useState(new Date());
+    const [date, setDate] = useState();
+    const modalizeRef = useRef(null);
+
+    function handleRegister(){
+        console.log('register');
+    }
+    function handleFinalize(){
+        console.log('register');
+    }
     return (
-    <View style={styles.container}>
-        <Header title="Inspection"/>
-    </View>
-)
+    <ScrollView style={styles.container} stickyHeaderIndices={[0]}>
+        <Header title="Inspection Schedule"/>
+        <View style={{marginTop:-30}} >
+            <MyCalendar/>
+        </View>
+        <View>
+        <FlatList
+                data={tasks}
+                keyExtractor={(item,index) => {
+                    return index.toString();
+                }}
+                renderItem={({ item }) => {
+                    return (
+                        <InspectionTask title={item.title} date={item.date} status={item.status}/>
+                    )
+                }} /> 
+        </View>
+    </ScrollView>
+    )
 }
 const styles = StyleSheet.create({
 container: {

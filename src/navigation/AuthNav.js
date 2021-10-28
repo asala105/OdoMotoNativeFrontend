@@ -5,7 +5,7 @@ import React from 'react';
 import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import ResetPasswordScreen from '../screens/ResetPassScreen/ResetPasswordScreen';
 import { colors } from '../constants/palette';
- 
+
 const Stack = createNativeStackNavigator();
 
 const AuthNav = () => {

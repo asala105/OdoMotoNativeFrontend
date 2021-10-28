@@ -4,7 +4,7 @@ import { StyleSheet, ScrollView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from '../../components/Header/Header';
-import Notification from '../../components/Notification';
+import Notification from '../../components/Notification/Notification';
 import { colors } from "../../constants/palette";
 //import api from '../api';
 
@@ -30,7 +30,7 @@ export default function Notifications() {
 // }, []);
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} stickyHeaderIndices={[0]}>
           <Header title="Notifications"/>
             <FlatList
                 style={styles.notificationList}

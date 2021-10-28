@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import { colors } from "./../constants/palette";
+import { colors } from "../../constants/palette";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { color } from 'react-native-reanimated';
 
