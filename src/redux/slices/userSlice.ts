@@ -2,15 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface User {
   userProfile?: {
-    address_id?: number|null,
     date_of_birth?: string|null,
-    department_id?: number|null,
+    department?: string|null,
     email?: string|null,
     first_login?: number|null,
     first_name?: string|null,
     id?: number|null,
     last_name?: string|null,
-    manager_id?: number|null,
+    manager?: string|null,
     phone_nb?: string|null,
     rank?: number|null,
     user_type_id?: number|null

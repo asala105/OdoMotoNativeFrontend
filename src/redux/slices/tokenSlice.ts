@@ -15,7 +15,7 @@ const tokenSlice = createSlice({
     initialState,
     reducers: { 
         addToken(state, action) {
-            console.log('adding user object  ', action.payload)
+            console.log('adding token object  ', action.payload)
             return action.payload;
         },
         deleteToken() {

@@ -2,8 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect, useRef} from 'react';
 import * as Notifications from 'expo-notifications';
 import StackSwitcher from './src/navigation/StackSwitcher';
-import BottomNav from './src/navigation/BottomNav';
-import AuthNav from './src/navigation/AuthNav';
+import { Provider } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { store } from './src/redux/store';
+import {updateToken} from './src/redux/slices/tokenSlice'
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -17,6 +19,11 @@ const App = () => {
   const notificationListener = useRef();
   const responseListener = useRef();
   useEffect(() => {
+    const token = AsyncStorage.getItem("access_token");
+    if (token) {
+      store.dispatch(updateToken(token))
+    }
+
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
     });
@@ -30,10 +37,10 @@ const App = () => {
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
-
-
   return (
-    <BottomNav />
+    <Provider store={store}>
+    <StackSwitcher/>
+    </Provider>
   );
 }
 export default App;

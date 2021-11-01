@@ -1,24 +1,34 @@
-import React, {useState, useRef} from 'react'
-import {View, StyleSheet, Text, Modal, TouchableOpacity, ScrollView} from 'react-native'
-import LeaveRequestForm from '../../components/LeaveRequest/LeaveRequestForm';
+import React, {useState} from 'react';
+import {View, StyleSheet} from 'react-native';
 import { colors } from '../../constants/palette';
-import { Modalize } from 'react-native-modalize';
-import { Portal } from 'react-native-portalize';
 import MyCalendar from '../../components/Calendar/Calendar';
 import SwitchingButton from '../../components/SwitchingButton.js/SwitchingButton'
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
+import api from '../../api';
 
 export default function AttendanceScreen({navigation}) {
-    const [value, onChange] = useState(new Date());
-    const [date, setDate] = useState();
-    const modalizeRef = useRef(null);
-
+    const [registeredDisabled, setRegisteredDisabled] = useState(false);
+    const [finalizeDisabled, setFinalizeDisabled] = useState(false);
     function handleRegister(){
-        console.log('register');
+        api.RegisterAttendance(id)
+        .then(response => {
+            console.log(response.data);
+            setRegisteredDisabled(true);
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
     function handleFinalize(){
-        console.log('register');
+        api.FinalizeAttendance(id)
+        .then(response => {
+            console.log(response.data);
+            setFinalizeDisabled(true);
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
     return (
     <View style={styles.container}>
@@ -28,8 +38,8 @@ export default function AttendanceScreen({navigation}) {
             <MyCalendar/>
         </View>
         <View style={styles.row}>
-            <Button text="Register Attendance" callback={handleRegister}/>
-            <Button text="Finalize Attendance" callback={handleFinalize}/>
+            <Button text="Register Attendance" callback={handleRegister} disabled={registeredDisabled}/>
+            <Button text="Finalize Attendance" callback={handleFinalize} disabled={finalizeDisabled}/>
         </View>
     </View>
     )

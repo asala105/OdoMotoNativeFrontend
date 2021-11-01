@@ -6,28 +6,24 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from '../../components/Header/Header';
 import Notification from '../../components/Notification/Notification';
 import { colors } from "../../constants/palette";
-//import api from '../api';
+import api from '../../api';
 
-let notifications = [
-  {id:'1',title:'Attendance',body:'reaquest approved', type:'accept' },
-  {id:'1',title:'Attendance',body:'reaquest approved', type:'reject'},
-  {id:'1',title:'Attendance',body:'reaquest approved', type:'info'},
-]
 export default function Notifications() {
 
-//   const [notifications, setNotifications] = useState('');
-//   const allNotifications = ()=>{
-//     api.getNotifications()
-//         .then(response => {
-//             setNotifications(response.data);
-//         })
-//         .catch(error => {
-//             console.log('Error');
-//         });
-// }
-// useEffect(() => {
-//   allNotifications();
-// }, []);
+  const [notifications, setNotifications] = useState('');
+  const allNotifications = ()=>{
+    api.getNotifications()
+        .then(response => {
+          setNotifications(response.data.notifications);
+          console.log(response.data);
+        })
+        .catch(error => {
+            console.log('Error');
+        });
+  }
+  useEffect(() => {
+    allNotifications();
+  }, []);
 
     return (
         <ScrollView style={styles.container} stickyHeaderIndices={[0]}>

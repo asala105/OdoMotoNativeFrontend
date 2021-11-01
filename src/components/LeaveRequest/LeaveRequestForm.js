@@ -1,14 +1,39 @@
-import DatePicker from 'react-native-datepicker'
 import React, {useState} from 'react'
 import {View, StyleSheet, Text, Dimensions, TextInput, TouchableOpacity} from 'react-native'
 import { colors } from '../../constants/palette';
 import Button from '../Button/Button';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function LeaveRequestForm() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setendDate] = useState(new Date());
   
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  function AddDestinationForm(){
+      console.log('AddDestinationForm');
+  }
+  const onChange = (event, selectedDate) => {
+      const currentDate = selectedDate || date;
+      setShow(Platform.OS === 'ios');
+      setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+      setShow(true);
+      setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+      showMode('date');
+  };
+
+  const showTimepicker = () => {
+      showMode('time');
+  };
+
   function handleSend(){
     console.log('send');
   }
@@ -16,63 +41,33 @@ export default function LeaveRequestForm() {
     <View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Starting from</Text>
-        <DatePicker
-          style={{width: "65%"}}
-          date={startDate}
-          mode="date"
-          placeholder="starting date"
-          format="YYYY-MM-DD"
-          minDate={startDate}
-          maxDate={startDate.getDate() + 10}
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          customStyles={{
-            dateIcon: {
-              position: 'absolute',
-              left: 0,
-              top: 4,
-              marginLeft: 0
-            },
-            dateInput: {
-              marginLeft: 36
-            }
-            // ... You can check the source to find the other keys.
-          }}
-          onDateChange={(date) => {this.setState({date: date})}}
-        />
+        <Text style={styles.inputs} onPress={showDatepicker}>
+                {date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()}
+                </Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Till</Text>
-        <DatePicker
-          style={{width: "65%"}}
-          date={endDate}
-          mode="date"
-          placeholder="ending date"
-          format="YYYY-MM-DD"
-          minDate={endDate}
-          maxDate={endDate.getDate() + 10}
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          customStyles={{
-            dateIcon: {
-              position: 'absolute',
-              left: 0,
-              top: 4,
-              marginLeft: 0
-            },
-            dateInput: {
-              marginLeft: 36
-            }
-            // ... You can check the source to find the other keys.
-          }}
-          onDateChange={(date) => {this.setState({date: date})}}
-        />
+        <Text style={styles.inputs} onPress={showDatepicker}>
+                {date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()}
+                </Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Leave Type</Text>
         <TextInput  placeholder=' Enter the leave type here' keyboardType='email-address' style={styles.inputs}></TextInput>
       </View>
       <Button text="Send Request" callback={handleSend}/>      
+    
+    <View>
+    {show ?
+        <DateTimePicker
+        testID="dateTimePicker"
+        value={date}
+        mode={mode}
+        is24Hour={true}
+        display="default"
+        onChange={onChange}
+        />:null}
+    </View> 
     </View>
   )
 }
@@ -115,12 +110,13 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     inputs: {
-      paddingBottom: 10,
-      paddingTop: 10,
+      paddingVertical: 10,
       paddingHorizontal: 10,
       backgroundColor : 'white',
       borderRadius : 7,
-    },
+      borderWidth : 1,
+      width: '65%'
+  },
     button: {
       alignItems: 'center',
       justifyContent: 'center',

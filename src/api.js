@@ -38,23 +38,39 @@ export default{
         return res;
     },
 
-/*     logout: async () =>{
-    let header = await getHeader();
-        let res = await axios.get(`${BASE_URL}/logout`, header);
-        return res;
-    },
-    register: (data) =>
-    axios.post(`${BASE_URL}/register`, data),
-
-    update: async (data) =>{
-    let header = await getHeader();
-        let res = await axios.post(`${BASE_URL}/update_profile`, data, header);
-        return res;
-    },
-
     getNotifications: async () =>{
         let header = await getHeader();
         let res = await axios.get(`${BASE_URL}/get_notifications`, header);
+        return res;
+    },
+
+    getMovementPlan: async () =>{
+        let header = await getHeader();
+        let res = await axios.get(`${BASE_URL}/view_movement`, header);
+        return res;
+    },
+
+    CancelFleetRequest: async (id) =>{
+        let header = await getHeader();
+        let res = await axios.get(`${BASE_URL}/cancel_fleet/${id}`, header);
+        return res;
+    },
+
+    SendFleetRequest: async (data) =>{
+        let header = await getHeader();
+        let res = await axios.post(`${BASE_URL}/fleet_request`,data, header);
+        return res;
+    },
+
+    RegisterAttendance: async () =>{
+        let header = await getHeader();
+        let res = await axios.get(`${BASE_URL}/register_attendance`, header);
+        return res;
+    },
+
+    FinalizeAttendance: async () =>{
+        let header = await getHeader();
+        let res = await axios.get(`${BASE_URL}/finalize_attendance`, header);
         return res;
     },
 
@@ -64,27 +80,9 @@ export default{
         return res;
     },
 
-    getAllUsers: async () =>{
-        let header = await getHeader();
-        let res = await axios.get(`${BASE_URL}/feed`, header);
+    Logout: async () =>{
+    let header = await getHeader();
+        let res = await axios.get(`${BASE_URL}/logout`, header);
         return res;
     },
-
-    getAllFavs: async () =>{
-        let header = await getHeader();
-        let res = await axios.get(`${BASE_URL}/get_favs`, header);
-        return res;
-    },
-
-    tapUser: async (id) =>{
-        let header = await getHeader();
-        let res = await axios.get(`${BASE_URL}/tap/${id}`, header);
-        return res;
-    },
-
-    blockUser: async (id) =>{
-        let header = await getHeader();
-        let res = await axios.get(`${BASE_URL}/block/${id}`, header);
-        return res;
-    } */
 }

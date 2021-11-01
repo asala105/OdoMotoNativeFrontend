@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import { FlatList, StyleSheet, Text, View, ScrollView} from 'react-native';
 import { colors } from "../../constants/palette";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -8,59 +8,93 @@ import MovementPlanForm from '../../components/MovementPlanForm/MovementPlanForm
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 import FuelOdometerForm from '../../components/FuelOdometerForm/FuelOdometerForm';
+import api from '../../api';
 
-let items = [
-    {from:'loc1', to:'loc2'},
-    {from:'loc1', to:'loc2'},
-    {from:'loc1', to:'loc2'},
-]
 export default function HomeScreen() {
-    const [userType, setUserType] = useState(3);
-
-    function handleCancel(){
-        console.log('cancel')
+    const [userType, setUserType] = useState(4);
+    const [movement, setMovement] = useState({});
+    const [driver, setDriver] = useState({});
+    const [vehicle, setVehicle] = useState({});
+    function handleCancel(id){
+        api.CancelFleetRequest(id)
+        .then(response => {
+            console.log(response.data);
+            setMovement(null);
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
     const modalizeRef = useRef(null);
 
     const onOpen = () => {
         modalizeRef.current?.open();
     };
+
+    function getMovement(){
+        api.getMovementPlan()
+        .then(response => {
+            if(response.data.movement!==null) {
+            setMovement(response.data.movement);
+            setDriver(response.data.movement.driver);
+            setVehicle(response.data.movement.vehicle);
+            }
+            else{
+                setDriver(null);
+                setVehicle(null);
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    useEffect(()=>{
+        getMovement();
+    },[]);
     return (<>
         <ScrollView style={styles.container} stickyHeaderIndices={[0]}>
             <Header title='Home'/>
-            <View style={styles.notificationBox}>
-                <Text style={styles.title}>Movement Plan</Text>
-                <View style={styles.row}>
-                    <View style={styles.col}>
-                        <Text style={styles.text}><Icon name="user" size={20} color={colors.darker_teal} /> Driver</Text>
-                        <Text style={styles.text}><Icon name="car" size={20} color={colors.darker_teal} /> Vehicle</Text>
-                    </View>
-                    <View style={styles.col}>
-                        <Text style={styles.text}> John Doe</Text>
-                        <Text style={styles.text}> Rec 001</Text>
-                    </View>
-                </View>
-                <View style={styles.buttonView}>            
-                    <Text style={styles.time}><Icon name="hourglass-start" size={20} color={colors.text_light} /> start: 10:00am</Text>
-                    <Text style={styles.time}><Icon name="hourglass-end" size={20} color={colors.text_light} /> end: 4:00pm</Text>
-                </View>
-                <FlatList
-                data={items}
-                keyExtractor={(item,index) => {
-                    return index.toString();
-                }}
-                renderItem={({ item }) => {
-                    return (
-                        <View style={styles.row}>
-                            <Text style={styles.text}><Icon name="map-marker" size={20} color={colors.darker_teal} /> From: {item.from}</Text>
-                            <Text style={styles.text}> To: {item.to}</Text>
+            <View style={{padding:10}}>
+            {/* {movement===null?
+                <View style={styles.notificationBox}>
+                    <Text style={styles.title}>Movement Plan</Text>
+                    <View style={styles.row}>
+                        <Text>No Movement Plans For Today</Text>
+                    </View>       
+                </View>: */}
+                <View style={styles.notificationBox}>
+                    <Text style={styles.title}>Movement Plan</Text>
+                    <View style={styles.row}>
+                        <View style={styles.col}>
+                            <Text style={styles.text}><Icon name="user" size={20} color={colors.darker_teal} /> Driver</Text>
+                            <Text style={styles.text}><Icon name="car" size={20} color={colors.darker_teal} /> Vehicle</Text>
                         </View>
-                    )
-                }} />      
-                {userType!==3?
-                <Button text="Cancel Movement Plan" callback={handleCancel}/>:
-                <></>}          
-            </View>
+                        <View style={styles.col}>
+                            <Text style={styles.text}> {driver!==null?driver.first_name + " " + driver.last_name:null}</Text> 
+                            <Text style={styles.text}> {vehicle!==null?vehicle.registration_code:null}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.buttonView}>            
+                        <Text style={styles.time}><Icon name="hourglass-start" size={20} color={colors.text_light} /> start: {movement!==null?movement.start_time:null}</Text>
+                        <Text style={styles.time}><Icon name="hourglass-end" size={20} color={colors.text_light} /> end: {movement!==null?movement.end_time:null}</Text>
+                    </View>
+                    <FlatList
+                    data={movement.destinations}
+                    keyExtractor={(item,index) => {
+                        return index.toString();
+                    }}
+                    renderItem={({ item }) => {
+                        return (
+                            <View style={styles.row}>
+                                <Text style={styles.text}><Icon name="map-marker" size={20} color={colors.darker_teal} /> From: {item.location_from}</Text>
+                                <Text style={styles.text}> To: {item.location_to}</Text>
+                            </View>
+                        )
+                    }} />      
+                    {userType!==3?
+                    <Button text="Cancel Movement Plan" callback={()=>{handleCancel(movement.id)}}/>:null}     
+                </View>
                 {userType===3?
                 <View>
                 <Portal>
@@ -96,7 +130,8 @@ export default function HomeScreen() {
                 </Portal>
                 <Button text="Request New Movement Plan" callback={onOpen}/>
             </View>
-}
+            }
+            </View>
         </ScrollView>
         </> 
     )

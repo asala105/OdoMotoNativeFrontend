@@ -20,7 +20,7 @@ export default function InspectionTask(props) {
                 </View>
                 <View style={styles.row2}>
                     <Text style={styles.description}>Date: {props.date}</Text>
-                    <View style={styles.tag}>
+                    <View style={[styles.tag,{backgroundColor:props.status==="Done"? colors.green:colors.gold}]}>
                         <Text>{props.status}</Text>
                     </View>
                 </View>
@@ -47,10 +47,10 @@ const styles = StyleSheet.create({
     },
     tag:{
         fontSize:10,
-        backgroundColor: colors.gold,
         padding:3,
         borderRadius:5,
-        minWidth:10
+        minWidth:10,
+        alignItems: 'center',
     },
     title:{
         color: colors.text_dark,

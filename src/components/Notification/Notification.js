@@ -7,6 +7,7 @@ import { color } from 'react-native-reanimated';
 
 export default function Notification(props) {
     const [read, setRead] = useState()
+    console.log(props.title);
     return (
         <View style={styles.notificationBox}>
             {props.type === 'accept' ? 

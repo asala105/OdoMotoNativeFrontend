@@ -3,7 +3,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import NotificationsScreen from '../screens/NotificationsScreen/NotificationsScreen';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import InspectionScreen from '../screens/InspectionScreen/InspectionScreen';
-import React, { useState } from 'react';
+import React, { useState, useRef} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from '../constants/palette';
 import { Host } from 'react-native-portalize';
@@ -12,9 +12,12 @@ import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
 const Tab = createMaterialBottomTabNavigator();
 
 function BottomNav() {
+  const navigationRef = useRef(null);
   const [userType, setUserType] = useState(3);
   return (
-<NavigationContainer>
+<NavigationContainer
+ref = {navigationRef}
+>
   <Host>
     <Tab.Navigator
       initialRouteName="Home"

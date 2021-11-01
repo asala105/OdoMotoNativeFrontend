@@ -1,12 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, ScrollView, ImageBackground, Dimensions, Image, Item, TextInput, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, ImageBackground, Dimensions, Image, Item, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import api from '../../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { colors } from "../../constants/palette";
 import Logo from '../../components/Logo';
+import Header from '../../components/Header/Header';
+import Button from '../../components/Button/Button';
+import {updateToken} from '../../redux/slices/tokenSlice';
+import {updateUserProfile} from '../../redux/slices/userSlice';
+import { store } from '../../redux/store';
 
 export default function Login({navigation}) {
   const [userEmail, setUserEmail] = useState('');
@@ -27,13 +32,28 @@ export default function Login({navigation}) {
       if (response.status === 200) {
         AsyncStorage.setItem('access_token', response.data.access_token);
         console.log(response.data);
+        store.dispatch(updateToken({ tokenVal: {
+          tokenV: response.data.access_token,
+      }}));
+      store.dispatch(updateUserProfile({ userProfile: {
+        date_of_birth: response.data.user.date_of_birth,
+        department: response.data.user.department!==null?response.data.user.department.name:null,
+        email: response.data.user.email,
+        first_login: response.data.user.first_login,
+        first_name: response.data.user.first_name,
+        id: response.data.user.id,
+        last_name: response.data.user.last_name,
+        manager: response.data.user.manager!==null?response.data.user.manager.first_name + ' ' + response.data.user.manager.last_name:null,
+        phone_nb: response.data.user.phone_nb,
+        rank: response.data.user.rank,
+        user_type_id: response.data.user.date_of_birth
+    }}));
         // if (response.data.user.first_login){
         //   api.registerExpoToken().then(response => {
         //     console.log('token registered successfully');
         //   }).catch(error => {
         //     console.log('an error occurred');
         //   });
-          navigation.replace('Reset Password');
         // }else{
         // navigation.replace('Home Screen');
         // }
@@ -48,13 +68,13 @@ export default function Login({navigation}) {
   };
 
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}  stickyHeaderIndices={[0]}>
+          <Header title="Login"/>
             <ImageBackground
                 source={require('../../pictures/bg3.png')}
                 style={styles.image}>
             </ImageBackground>
         <View style={{ marginTop: -170 }} >
-            {/* <Image source={require('../../pictures/logoIcon.png')} style={styles.icon}/> */}
         <Logo style={styles.icon}/>
         </View>
         {/* Bottom view */}
@@ -62,11 +82,13 @@ export default function Login({navigation}) {
             {/* Welcome View */}
             <View style={{ padding: 20, height : 420}}>
                 <Text style={{ color: colors.text, fontSize: 24,fontWeight:'bold' }}>Welcome</Text>
+                <View style={{ flexDirection:'row' }}>
                 <Text>Forgot your password?
                 <TouchableOpacity onPress ={()=>navigation.navigate("Reset Password")}>
                     <Text style={{ color: colors.text, fontStyle: 'italic' }}>  Reset Here</Text>
                 </TouchableOpacity>
                 </Text>
+                </View>
                 <View style={{ marginTop: 30 }}>
                     <Text style={{ color: colors.text, fontSize: 14, fontWeight: 'normal',marginBottom:10 }}> <Icon name="user" style={{ fontSize: 16 }} />  Email address</Text>
                     <TextInput  placeholder=' Enter your email address' keyboardType='email-address' style={styles.inputs} onChangeText={(email)=>{setUserEmail(email)}}></TextInput>
@@ -77,12 +99,8 @@ export default function Login({navigation}) {
                 <View>            
                   <Text style={styles.errorTextStyle}>{errortext}</Text>
                 </View>
-                {/* Button */}
-                <View style={styles.buttonView}>            
-                    <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                        <Text style={styles.btntext}>Login</Text>
-                    </TouchableOpacity>
-                </View>
+                {/* Button */}        
+                    <Button text="Login" callback={handleLogin}/>
             </View>
         </View>
     </ScrollView>
@@ -118,7 +136,7 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 40,
     borderTopEndRadius: 40,
     alignSelf:'stretch',
-    height:'100%',
+    height:700,
   },
 
   buttonView: {

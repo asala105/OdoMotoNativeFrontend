@@ -4,11 +4,17 @@ import { colors } from '../../constants/palette';
 import Button from '../Button/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DestinationsForm from '../DestinationsForm/DestinationsForm';
+import api from '../../api';
 
 export default function MovementPlanForm() {
     const [date, setDate] = useState(new Date());
+    const [dateTime, setDateTime] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    const [start, setStart] = useState(new Date());
+    const [end, setEnd] = useState(new Date());
+    const [isStart, setIsStart] = useState(false);
+    const [purpose, setPurpose] = useState('');
 
     function AddDestinationForm(){
         console.log('AddDestinationForm');
@@ -17,6 +23,13 @@ export default function MovementPlanForm() {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
+        setDateTime(currentDate);
+        if(mode==='time' && isStart){
+            setStart(currentDate);
+        }
+        if(mode==='time' && isStart===false){
+            setEnd(currentDate);
+        }
     };
 
     const showMode = (currentMode) => {
@@ -33,33 +46,39 @@ export default function MovementPlanForm() {
     };
 
     function handleSend(){
-        console.log('send');
+        api.SendFleetRequest()
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
     return (
         <View>
             <View style={styles.row}>
                 <Text style={styles.formLabel}> Date:</Text>
                 <Text style={styles.inputs} onPress={showDatepicker}>
-                {date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()}
+                {dateTime.getFullYear() + '-' + dateTime.getMonth() + '-' + dateTime.getDate()}
                 </Text>
             </View>
             <View style={styles.row}>
                 <Text style={styles.formLabel}> Start Time:</Text>
-                <Text style={styles.inputs} onPress={showTimepicker}>
-                {date.getHours() + ':' + date.getMinutes()}
+                <Text style={styles.inputs} onPress={()=>{showTimepicker(); setIsStart(true);}}>
+                {start.getHours() + ':' + start.getMinutes()}
                 </Text>
             </View>
             <View style={styles.row}>
                 <Text style={styles.formLabel}> End Time:</Text>
-                <Text style={styles.inputs} onPress={showTimepicker}>
-                {date.getHours() + ':' + date.getMinutes()}
+                <Text style={styles.inputs} onPress={()=>{showTimepicker(); setIsStart(false);}}>
+                {end.getHours() + ':' + end.getMinutes()}
                 </Text>
             </View>
             <View style={styles.row}>
                 <Text style={styles.formLabel}> Purpose:</Text>
-                <TextInput  placeholder=' Enter the purpose of the trip here' style={styles.inputs}></TextInput>
+                <TextInput  placeholder=' Enter the purpose of the trip here' style={styles.inputs}
+                onChange={(event)=>{setPurpose(event.target.value)}}></TextInput>
             </View>
-            
             <DestinationsForm/>
             <View style={{ marginVertical:10 }}>
             <Button text="Send Request" callback={handleSend}/> 
