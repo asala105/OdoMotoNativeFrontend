@@ -15,6 +15,8 @@ export default function MovementPlanForm() {
     const [end, setEnd] = useState(new Date());
     const [isStart, setIsStart] = useState(false);
     const [purpose, setPurpose] = useState('');
+    const [locationFrom, setLocationFrom] = useState('');
+    const [locationTo, setLocationTo] = useState('');
 
     function AddDestinationForm(){
         console.log('AddDestinationForm');
@@ -45,15 +47,49 @@ export default function MovementPlanForm() {
         showMode('time');
     };
 
+    const getdate = (dateItem)=>{
+        let year = dateItem.getFullYear();
+        let month = ('0'+(dateItem.getMonth()+1)).slice(-2);
+        let day = ('0'+(dateItem.getDate()+1)).slice(-2);
+        return year + "-" + month + "-" + day;
+      }
+
+      const gettime = (dateItem)=>{
+        let hours = ('0'+(dateItem.getHours()+1)).slice(-2);
+        let minutes = ('0'+(dateItem.getMinutes()+1)).slice(-2);
+        return hours+":" + minutes;
+      }
     function handleSend(){
-        api.SendFleetRequest()
-        .then(response => {
+        if (purpose===''){
+            console.log('all fields required!');
+        }else{
+            let dataToSend = {
+                date: getdate(date),
+                start_time: gettime(start),
+                end_time: gettime(end),
+                purpose: purpose
+            };
+          console.log(dataToSend);
+          api.SendFleetRequest(dataToSend)
+          .then(response => {
             console.log(response.data);
-        })
-        .catch(error => {
-            console.log(error);
-        });
-    }
+            let destinationData = {
+                location_from: locationFrom,
+                location_to: locationTo,
+            }
+            api.AddDestination(destinationData,response.data.Fleet.id)
+            .then(response => {
+              console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+          })
+          .catch(error => {
+              console.log(error);
+          });
+        }
+        }
     return (
         <View>
             <View style={styles.row}>
@@ -77,9 +113,16 @@ export default function MovementPlanForm() {
             <View style={styles.row}>
                 <Text style={styles.formLabel}> Purpose:</Text>
                 <TextInput  placeholder=' Enter the purpose of the trip here' style={styles.inputs}
-                onChange={(event)=>{setPurpose(event.target.value)}}></TextInput>
+                onChangeText={(value)=>{setPurpose(value)}}></TextInput>
             </View>
-            <DestinationsForm/>
+            <View style={styles.row}>
+                <Text style={styles.formLabel}> From:</Text>
+                <TextInput  placeholder=' From location...' style={styles.inputs} onChangeText={(value)=>{setLocationFrom(value)}}></TextInput>
+            </View>
+            <View style={styles.row}>
+                <Text style={styles.formLabel}> To:</Text>
+                <TextInput  placeholder=' To Location...' style={styles.inputs} onChangeText={(value)=>{setLocationTo(value)}}></TextInput>
+            </View>
             <View style={{ marginVertical:10 }}>
             <Button text="Send Request" callback={handleSend}/> 
             </View>

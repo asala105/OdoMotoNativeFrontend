@@ -15,7 +15,7 @@ LocaleConfig.defaultLocale = 'en';
 
 const nDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-export default function MyCalendar() {
+export default function MyCalendar(props) {
     // const vacation = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
     // const massage = {key: 'massage', color: 'blue', selectedDotColor: 'blue'};
     // const workout = {key: 'workout', color: 'green'};
@@ -82,7 +82,7 @@ export default function MyCalendar() {
         maxDate={undefined}
         // Handler which gets executed on day press. Default = undefined
         onDayPress={day => {
-            console.log('selected day', day);
+            props.callback? props.callback(day.dateString):console.log('selected day', day);
         }}
         // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
         monthFormat={'yyyy MMMM'}
@@ -101,12 +101,7 @@ export default function MyCalendar() {
         firstDay={1}
 
         markingType={'period'}
-        markedDates={{
-            '2021-10-20': {textColor: 'green'},
-            '2021-10-22': {startingDay: true, color: 'green', textColor: 'gray'},
-            '2021-10-23': {selected: true, endingDay: true, color: 'green', textColor: 'gray'},
-            '2021-10-04': {disabled: true, startingDay: true, color: 'green', endingDay: true}
-        }}
+        markedDates={props.marked}
         />
     </View>
     )

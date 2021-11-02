@@ -3,22 +3,27 @@ import {View, StyleSheet, Text, Dimensions, TextInput, TouchableOpacity} from 'r
 import { colors } from '../../constants/palette';
 import Button from '../Button/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import api from '../../api';
 
 export default function LeaveRequestForm() {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setendDate] = useState(new Date());
-  
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+  const [from, setFrom] = useState(new Date());
+  const [till, setTill] = useState(new Date());
+  const [isStart, setIsStart] = useState(true);
+  const [type, setType] = useState(true);
 
-  function AddDestinationForm(){
-      console.log('AddDestinationForm');
-  }
   const onChange = (event, selectedDate) => {
       const currentDate = selectedDate || date;
       setShow(Platform.OS === 'ios');
       setDate(currentDate);
+      if (isStart){
+        setFrom(currentDate);
+      }
+      if (isStart===false){
+          setTill(currentDate);
+      }
   };
 
   const showMode = (currentMode) => {
@@ -30,30 +35,49 @@ export default function LeaveRequestForm() {
       showMode('date');
   };
 
-  const showTimepicker = () => {
-      showMode('time');
-  };
-
+  const getdate = (dateItem)=>{
+    let year = dateItem.getFullYear();
+    let month = ('0'+(dateItem.getMonth()+1)).slice(-2);
+    let day = ('0'+(dateItem.getDate()+1)).slice(-2);
+    return year + "-" + month + "-" + day;
+  }
   function handleSend(){
-    console.log('send');
+    if (type===''){
+      console.log('all fields required!');
+    }
+    else{
+      let dataToSend = {
+        leave_from_date: getdate(from),
+        leave_till_date: getdate(till),
+        leave_type: type,
+      };
+      console.log(dataToSend);
+      api.RequestLeave(dataToSend)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+          console.log(error);
+      });
+    }
   }
   return (
     <View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Starting from</Text>
-        <Text style={styles.inputs} onPress={showDatepicker}>
-                {date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()}
+        <Text style={styles.inputs} onPress={()=>{showDatepicker(); setIsStart(true);}}>
+                {from.getFullYear() + '-' + from.getMonth() + '-' + from.getDate()}
                 </Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Till</Text>
-        <Text style={styles.inputs} onPress={showDatepicker}>
-                {date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()}
+        <Text style={styles.inputs} onPress={()=>{showDatepicker(); setIsStart(false);}}>
+                {till.getFullYear() + '-' + till.getMonth() + '-' + till.getDate()}
                 </Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Leave Type</Text>
-        <TextInput  placeholder=' Enter the leave type here' keyboardType='email-address' style={styles.inputs}></TextInput>
+        <TextInput  placeholder=' Enter the leave type here' keyboardType='email-address' style={styles.inputs} onChangeText={(value)=>{setType(value);}}></TextInput>
       </View>
       <Button text="Send Request" callback={handleSend}/>      
     

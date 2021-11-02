@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {View, StyleSheet, Text} from 'react-native'
 import LeaveRequestForm from '../../components/LeaveRequest/LeaveRequestForm';
 import { colors } from '../../constants/palette';
@@ -8,21 +8,37 @@ import MyCalendar from '../../components/Calendar/Calendar';
 import SwitchingButton from '../../components/SwitchingButton.js/SwitchingButton'
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
+import ExtractMarkedDates from './LeavesFunctions';
+import api from '../../api';
 
 export default function LeavesScreen({navigation}) {
     const [value, onChange] = useState(new Date());
     const [date, setDate] = useState();
     const modalizeRef = useRef(null);
-
+    const [dates, setDates] = useState([]);
     const onOpen = () => {
         modalizeRef.current?.open();
     };
+    function getLeavesData(){
+        api.GetLeavesData()
+        .then(response => {
+            console.log(response.data);
+            setDates(ExtractMarkedDates(response.data.leaves));
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+    useEffect(() =>{
+        getLeavesData();
+    },[])
     return (
         <View style={styles.container}>
             <Header title="Leaves"/>
+            <View style={{padding:10}}>
             <SwitchingButton nav={navigation} current={2}/>
             <View style={{marginTop:-30}}>
-                <MyCalendar/>
+                <MyCalendar marked={dates}/>
             </View>
             <View>
                 <Portal>
@@ -40,6 +56,7 @@ export default function LeavesScreen({navigation}) {
                     </Modalize>
                 </Portal>
                 <Button text="Request A Leave" callback={onOpen}/>
+            </View>
             </View>
         </View>
     )

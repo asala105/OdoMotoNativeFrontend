@@ -62,6 +62,48 @@ export default{
         return res;
     },
 
+    AddDestination: async (data, id) =>{
+        let header = await getHeader();
+        let res = await axios.post(`${BASE_URL}/add_destination/${id}`,data, header);
+        return res;
+    },
+    
+    AddFuelOdomoter: async (data, fleet_id, vehicle_id) =>{
+        let header = await getHeader();
+        let res = await axios.post(`${BASE_URL}/add_trip_fuel_odometer/${fleet_id}/${vehicle_id}`,data, header);
+        return res;
+    },
+
+    GetInspectionTask: async (date) =>{
+        let header = await getHeader();
+        let res = await axios.get(`${BASE_URL}/get_tasks/${date}`, header);
+        return res;
+    },
+
+    MarkInspectionTaskDone: async (id) =>{
+        let header = await getHeader();
+        let res = await axios.get(`${BASE_URL}/mark_task_done/${id}`, header);
+        return res;
+    },
+    
+    GetLeavesData: async () =>{
+        let header = await getHeader();
+        let res = await axios.get(`${BASE_URL}/get_leaves_record`, header);
+        return res;
+    },
+
+    RequestLeave: async (data) =>{
+        let header = await getHeader();
+        let res = await axios.post(`${BASE_URL}/leave_request`, data, header);
+        return res;
+    },
+
+    GetAttendanceData: async () =>{
+        let header = await getHeader();
+        let res = await axios.get(`${BASE_URL}/get_attendance_record`, header);
+        return res;
+    },
+
     RegisterAttendance: async () =>{
         let header = await getHeader();
         let res = await axios.get(`${BASE_URL}/register_attendance`, header);

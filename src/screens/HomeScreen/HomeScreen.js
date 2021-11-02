@@ -11,7 +11,7 @@ import FuelOdometerForm from '../../components/FuelOdometerForm/FuelOdometerForm
 import api from '../../api';
 
 export default function HomeScreen() {
-    const [userType, setUserType] = useState(4);
+    const [userType, setUserType] = useState(3);
     const [movement, setMovement] = useState({});
     const [driver, setDriver] = useState({});
     const [vehicle, setVehicle] = useState({});
@@ -95,7 +95,7 @@ export default function HomeScreen() {
                     {userType!==3?
                     <Button text="Cancel Movement Plan" callback={()=>{handleCancel(movement.id)}}/>:null}     
                 </View>
-                {userType===3?
+                {userType===3 && movement!==null?
                 <View>
                 <Portal>
                     <Modalize ref={modalizeRef} style={{ backgroundColor: colors.card_background}}>
@@ -106,7 +106,7 @@ export default function HomeScreen() {
                                 </View> 
                             </View>
                             <View>
-                                <FuelOdometerForm/>
+                                <FuelOdometerForm fleet={movement.id} vehicle={movement.vehicle_id}/>
                             </View>
                         </View>
                     </Modalize>

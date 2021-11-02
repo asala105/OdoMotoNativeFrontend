@@ -3,33 +3,28 @@ import {View, StyleSheet, Text, Dimensions, TextInput, Platform} from 'react-nat
 import { colors } from '../../constants/palette';
 import Button from '../Button/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import api from '../../api';
 
-export default function FuelOdometerForm() {
-    const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
-    
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
-    };
-    
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
-    };
-    
-    const showDatepicker = () => {
-        showMode('date');
-    };
-    
-    const showTimepicker = () => {
-        showMode('time');
-    };
-    
+export default function FuelOdometerForm(props) {
+  const [odometerBefore, setOdometerBefore] = useState('');
+  const [odometerAfter, setOdometerAfter] = useState('');
+  const [fuelBefore, setFuelBefore] = useState('');
+  const [fuelAfter, setFuelAfter] = useState('');
+
     function handleSend(){
-        console.log('send');
+      let dataToSend = {
+        odometer_before_trip: odometerBefore,
+        odometer_after_trip: odometerAfter,
+        fuel_before_trip: fuelBefore,
+        fuel_after_trip: fuelAfter,
+      };
+      api.AddFuelOdomoter(dataToSend, props.fleet, props.vehicle)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+          console.log(error);
+      });
     }
   return (
     <View>
@@ -38,22 +33,26 @@ export default function FuelOdometerForm() {
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Odometer:</Text>
-        <TextInput  placeholder=' Enter the odometer record in km' style={styles.inputs}></TextInput>
+        <TextInput  placeholder=' Enter the odometer record in km' style={styles.inputs}
+        onChangeText={(value) =>setOdometerBefore(value)}></TextInput>
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Fuel Level:</Text>
-        <TextInput  placeholder=' Enter the fuel level in %' keyboardType='email-address' style={styles.inputs}></TextInput>
+        <TextInput  placeholder=' Enter the fuel level in %' keyboardType='email-address' style={styles.inputs}
+        onChangeText={(value) =>setFuelBefore(value)}></TextInput>
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> After Trip</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Odometer:</Text>
-        <TextInput  placeholder=' Enter the odometer record in km' style={styles.inputs}></TextInput>
+        <TextInput  placeholder=' Enter the odometer record in km' style={styles.inputs}
+        onChangeText={(value) =>setOdometerAfter(value)}></TextInput>
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Fuel Level:</Text>
-        <TextInput  placeholder=' Enter the fuel level in %' keyboardType='email-address' style={styles.inputs}></TextInput>
+        <TextInput  placeholder=' Enter the fuel level in %' keyboardType='email-address' style={styles.inputs}
+        onChangeText={(value) =>setFuelAfter(value)}></TextInput>
       </View>
       <Button text="Save" callback={handleSend}/>   
     </View>

@@ -4,24 +4,33 @@ import { colors } from "../../constants/palette";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { color } from 'react-native-reanimated';
 import Button from '../Button/Button';
+import api from '../../api';
 
 
 export default function InspectionTask(props) {
-    const [read, setRead] = useState()
+    const [done, setDone] = useState(props.status);
     function handleMarkDone(){
         console.log('Done');
+        api.MarkInspectionTaskDone(props.id)
+        .then(response => {
+            console.log(response.data);
+            setDone(6);
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
     return (
         <View style={styles.notificationBox}>
             <View style={styles.col}>
                 <View style={styles.row1}>
                 <Icon name="cog" size={40} color={colors.darker_teal} />
-                <Text style={styles.title}>{props.title}</Text>
+                <Text style={styles.title}>{props.title===0? "Maintenance":"Safety Inpection"}</Text>
                 </View>
                 <View style={styles.row2}>
                     <Text style={styles.description}>Date: {props.date}</Text>
-                    <View style={[styles.tag,{backgroundColor:props.status==="Done"? colors.green:colors.gold}]}>
-                        <Text>{props.status}</Text>
+                    <View style={[styles.tag,{backgroundColor:done===6? colors.green:colors.gold}]}>
+                        <Text>{done===6?"Done":"In Progress"}</Text>
                     </View>
                 </View>
             </View>

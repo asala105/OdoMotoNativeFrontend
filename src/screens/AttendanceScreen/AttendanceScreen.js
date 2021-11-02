@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import { colors } from '../../constants/palette';
 import MyCalendar from '../../components/Calendar/Calendar';
@@ -6,12 +6,14 @@ import SwitchingButton from '../../components/SwitchingButton.js/SwitchingButton
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
 import api from '../../api';
+import ExtractMarkedDates from './AttendanceFunctions';
 
 export default function AttendanceScreen({navigation}) {
     const [registeredDisabled, setRegisteredDisabled] = useState(false);
     const [finalizeDisabled, setFinalizeDisabled] = useState(false);
+    const [dates, setDates] = useState([]);
     function handleRegister(){
-        api.RegisterAttendance(id)
+        api.RegisterAttendance()
         .then(response => {
             console.log(response.data);
             setRegisteredDisabled(true);
@@ -21,7 +23,7 @@ export default function AttendanceScreen({navigation}) {
         });
     }
     function handleFinalize(){
-        api.FinalizeAttendance(id)
+        api.FinalizeAttendance()
         .then(response => {
             console.log(response.data);
             setFinalizeDisabled(true);
@@ -30,16 +32,31 @@ export default function AttendanceScreen({navigation}) {
             console.log(error);
         });
     }
+
+    function getAttendanceData(){
+        api.GetAttendanceData()
+        .then(response => {
+            setDates(ExtractMarkedDates(response.data.attendance));
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+    useEffect(() =>{
+        getAttendanceData();
+    },[])
     return (
     <View style={styles.container}>
         <Header title="Attendance"/>
+        <View style={{ padding:10 }}>
         <SwitchingButton nav={navigation} current={1}/>
         <View style={{marginTop:-30}}>
-            <MyCalendar/>
+            <MyCalendar marked={dates}/>
         </View>
         <View style={styles.row}>
             <Button text="Register Attendance" callback={handleRegister} disabled={registeredDisabled}/>
             <Button text="Finalize Attendance" callback={handleFinalize} disabled={finalizeDisabled}/>
+        </View>
         </View>
     </View>
     )

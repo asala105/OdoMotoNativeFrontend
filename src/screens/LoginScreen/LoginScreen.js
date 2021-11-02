@@ -83,11 +83,11 @@ export default function Login({navigation}) {
             <View style={{ padding: 20, height : 420}}>
                 <Text style={{ color: colors.text, fontSize: 24,fontWeight:'bold' }}>Welcome</Text>
                 <View style={{ flexDirection:'row' }}>
-                <Text>Forgot your password?
+                {/* <Text>Forgot your password?
                 <TouchableOpacity onPress ={()=>navigation.navigate("Reset Password")}>
                     <Text style={{ color: colors.text, fontStyle: 'italic' }}>  Reset Here</Text>
                 </TouchableOpacity>
-                </Text>
+                </Text> */}
                 </View>
                 <View style={{ marginTop: 30 }}>
                     <Text style={{ color: colors.text, fontSize: 14, fontWeight: 'normal',marginBottom:10 }}> <Icon name="user" style={{ fontSize: 16 }} />  Email address</Text>

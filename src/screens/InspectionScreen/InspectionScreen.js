@@ -6,6 +6,7 @@ import { Portal } from 'react-native-portalize';
 import MyCalendar from '../../components/Calendar/Calendar';
 import Header from '../../components/Header/Header';
 import InspectionTask from '../../components/InspecionTask/InspectionTask';
+import api from '../../api';
 
 const tasks = [
     {title:'Safety Check', date:'2021-10-28', status:'In progress'},
@@ -14,31 +15,35 @@ const tasks = [
 ]
 
 export default function InspectionScreen({navigation}) {
-    const [value, onChange] = useState(new Date());
-    const [date, setDate] = useState();
-    const modalizeRef = useRef(null);
+    const [data, setData] = useState();
 
-    function handleRegister(){
-        console.log('register');
+    function getTasks(date){
+        console.log(date);
+        api.GetInspectionTask(date)
+        .then(response => {
+            console.log(response.data);
+            setData(response.data.inspectionTasks);
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
-    function handleFinalize(){
-        console.log('register');
-    }
+
     return (
     <ScrollView style={styles.container} stickyHeaderIndices={[0]}>
         <Header title="Inspection Schedule"/>
         <View style={{marginTop:-30}} >
-            <MyCalendar/>
+            <MyCalendar callback={getTasks}/>
         </View>
         <View>
         <FlatList
-                data={tasks}
+                data={data}
                 keyExtractor={(item,index) => {
                     return index.toString();
                 }}
                 renderItem={({ item }) => {
                     return (
-                        <InspectionTask title={item.title} date={item.date} status={item.status}/>
+                        <InspectionTask id={item.id} title={item.inspection_type} date={item.date} status={item.status_id}/>
                     )
                 }} /> 
         </View>
