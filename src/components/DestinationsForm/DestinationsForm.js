@@ -8,11 +8,11 @@ export default function DestinationsForm() {
         <View>
             <View style={styles.row}>
                 <Text style={styles.formLabel}> From:</Text>
-                <TextInput  placeholder=' From location...' style={styles.inputs}></TextInput>
+                <TextInput  placeholder=' From location...' keyboardType="default" style={styles.inputs}></TextInput>
             </View>
             <View style={styles.row}>
                 <Text style={styles.formLabel}> To:</Text>
-                <TextInput  placeholder=' To Location...' style={styles.inputs}></TextInput>
+                <TextInput  placeholder=' To Location...' keyboardType="default" style={styles.inputs}></TextInput>
             </View>
         </View>
     )

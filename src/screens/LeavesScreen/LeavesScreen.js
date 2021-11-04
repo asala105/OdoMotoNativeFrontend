@@ -15,9 +15,13 @@ export default function LeavesScreen({navigation}) {
     const [value, onChange] = useState(new Date());
     const [date, setDate] = useState();
     const modalizeRef = useRef(null);
-    const [dates, setDates] = useState([]);
+    const [dates, setDates] = useState({});
     const onOpen = () => {
         modalizeRef.current?.open();
+    };
+
+    const onClose = () => {
+        modalizeRef.current?.close();
     };
     function getLeavesData(){
         api.GetLeavesData()
@@ -50,7 +54,7 @@ export default function LeavesScreen({navigation}) {
                             </View> 
                         </View>
                         <View>
-                        <LeaveRequestForm/>
+                        <LeaveRequestForm callback={onClose}/>
                         </View>
                         </View>
                     </Modalize>

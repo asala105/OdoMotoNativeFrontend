@@ -9,9 +9,13 @@ import { colors } from '../constants/palette';
 import { Host } from 'react-native-portalize';
 import AttendanceNav from './AttendanceNav';
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen';
+import { useSelector } from 'react-redux';
+import HomeNav from './HomeNav';
 const Tab = createMaterialBottomTabNavigator();
 
 function BottomNav() {
+  
+  const user = useSelector((state) => state?.user);
   const navigationRef = useRef(null);
   const [userType, setUserType] = useState(3);
   return (
@@ -40,7 +44,7 @@ ref = {navigationRef}
             <MaterialCommunityIcons name="bell" color={color} size={26} />
           ),
       }}/>
-      {userType===3?<>
+      {user?.userProfile?.user_type_id===3?<>
         <Tab.Screen name="Attendance" component={AttendanceNav} 
         options={{
           tabBarLabel: 'Attendance',

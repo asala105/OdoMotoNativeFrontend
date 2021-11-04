@@ -6,7 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import DestinationsForm from '../DestinationsForm/DestinationsForm';
 import api from '../../api';
 
-export default function MovementPlanForm() {
+export default function MovementPlanForm(props) {
     const [date, setDate] = useState(new Date());
     const [dateTime, setDateTime] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -18,9 +18,6 @@ export default function MovementPlanForm() {
     const [locationFrom, setLocationFrom] = useState('');
     const [locationTo, setLocationTo] = useState('');
 
-    function AddDestinationForm(){
-        console.log('AddDestinationForm');
-    }
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
@@ -72,14 +69,15 @@ export default function MovementPlanForm() {
           console.log(dataToSend);
           api.SendFleetRequest(dataToSend)
           .then(response => {
-            console.log(response.data);
             let destinationData = {
                 location_from: locationFrom,
                 location_to: locationTo,
             }
+            let message = response.data.message;
             api.AddDestination(destinationData,response.data.Fleet.id)
             .then(response => {
-              console.log(response.data);
+              props.callback();
+              alrt(message);
             })
             .catch(error => {
                 console.log(error);
@@ -113,15 +111,17 @@ export default function MovementPlanForm() {
             <View style={styles.row}>
                 <Text style={styles.formLabel}> Purpose:</Text>
                 <TextInput  placeholder=' Enter the purpose of the trip here' style={styles.inputs}
-                onChangeText={(value)=>{setPurpose(value)}}></TextInput>
+                onChangeText={(value)=>{setPurpose(value)}} keyboardType='default'></TextInput>
             </View>
             <View style={styles.row}>
                 <Text style={styles.formLabel}> From:</Text>
-                <TextInput  placeholder=' From location...' style={styles.inputs} onChangeText={(value)=>{setLocationFrom(value)}}></TextInput>
+                <TextInput  placeholder=' From location...' style={styles.inputs} keyboardType='default'
+                onChangeText={(value)=>{setLocationFrom(value)}}></TextInput>
             </View>
             <View style={styles.row}>
                 <Text style={styles.formLabel}> To:</Text>
-                <TextInput  placeholder=' To Location...' style={styles.inputs} onChangeText={(value)=>{setLocationTo(value)}}></TextInput>
+                <TextInput  placeholder=' To Location...' style={styles.inputs} keyboardType='default'
+                onChangeText={(value)=>{setLocationTo(value)}}></TextInput>
             </View>
             <View style={{ marginVertical:10 }}>
             <Button text="Send Request" callback={handleSend}/> 

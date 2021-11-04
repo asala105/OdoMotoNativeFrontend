@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import {View, StyleSheet, Text, Dimensions, TextInput, Platform} from 'react-native'
 import { colors } from '../../constants/palette';
 import Button from '../Button/Button';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import api from '../../api';
 
 export default function FuelOdometerForm(props) {
@@ -20,7 +19,8 @@ export default function FuelOdometerForm(props) {
       };
       api.AddFuelOdomoter(dataToSend, props.fleet, props.vehicle)
       .then(response => {
-        console.log(response.data);
+        alert(response.data.message);
+        props.callback();
       })
       .catch(error => {
           console.log(error);
@@ -34,11 +34,11 @@ export default function FuelOdometerForm(props) {
       <View style={styles.row}>
         <Text style={styles.formLabel}> Odometer:</Text>
         <TextInput  placeholder=' Enter the odometer record in km' style={styles.inputs}
-        onChangeText={(value) =>setOdometerBefore(value)}></TextInput>
+        onChangeText={(value) =>setOdometerBefore(value)} keyboardType='numeric'></TextInput>
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Fuel Level:</Text>
-        <TextInput  placeholder=' Enter the fuel level in %' keyboardType='email-address' style={styles.inputs}
+        <TextInput  placeholder=' Enter the fuel level in Liters' keyboardType='numeric' style={styles.inputs}
         onChangeText={(value) =>setFuelBefore(value)}></TextInput>
       </View>
       <View style={styles.row}>
@@ -47,11 +47,11 @@ export default function FuelOdometerForm(props) {
       <View style={styles.row}>
         <Text style={styles.formLabel}> Odometer:</Text>
         <TextInput  placeholder=' Enter the odometer record in km' style={styles.inputs}
-        onChangeText={(value) =>setOdometerAfter(value)}></TextInput>
+        onChangeText={(value) =>setOdometerAfter(value)} keyboardType='numeric'></TextInput>
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Fuel Level:</Text>
-        <TextInput  placeholder=' Enter the fuel level in %' keyboardType='email-address' style={styles.inputs}
+        <TextInput  placeholder=' Enter the fuel level in Liters' keyboardType='numeric' style={styles.inputs}
         onChangeText={(value) =>setFuelAfter(value)}></TextInput>
       </View>
       <Button text="Save" callback={handleSend}/>   

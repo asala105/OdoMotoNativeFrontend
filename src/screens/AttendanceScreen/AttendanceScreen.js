@@ -11,7 +11,7 @@ import ExtractMarkedDates from './AttendanceFunctions';
 export default function AttendanceScreen({navigation}) {
     const [registeredDisabled, setRegisteredDisabled] = useState(false);
     const [finalizeDisabled, setFinalizeDisabled] = useState(false);
-    const [dates, setDates] = useState([]);
+    const [dates, setDates] = useState({});
     function handleRegister(){
         api.RegisterAttendance()
         .then(response => {
@@ -44,6 +44,7 @@ export default function AttendanceScreen({navigation}) {
     }
     useEffect(() =>{
         getAttendanceData();
+        console.log(dates);
     },[])
     return (
     <View style={styles.container}>

@@ -10,9 +10,9 @@ export default function Notification(props) {
     console.log(props.title);
     return (
         <View style={styles.notificationBox}>
-            {props.type === 'accept' ? 
+            {props.type === 'Accept' ? 
                 <Icon name="check-circle" size={40} color={colors.green} />
-                : props.type==='reject'?
+                : props.type==='Reject'?
                 <Icon name="times-circle" size={40} color={colors.red} />:
                 <Icon name="bell" size={40} color={colors.teal} />}
             <View style={styles.col}>

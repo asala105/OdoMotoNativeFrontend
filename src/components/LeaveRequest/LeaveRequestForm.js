@@ -5,7 +5,7 @@ import Button from '../Button/Button';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import api from '../../api';
 
-export default function LeaveRequestForm() {
+export default function LeaveRequestForm(props) {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -54,7 +54,7 @@ export default function LeaveRequestForm() {
       console.log(dataToSend);
       api.RequestLeave(dataToSend)
       .then(response => {
-        console.log(response.data);
+        props.callback();
       })
       .catch(error => {
           console.log(error);
@@ -77,7 +77,7 @@ export default function LeaveRequestForm() {
       </View>
       <View style={styles.row}>
         <Text style={styles.formLabel}> Leave Type</Text>
-        <TextInput  placeholder=' Enter the leave type here' keyboardType='email-address' style={styles.inputs} onChangeText={(value)=>{setType(value);}}></TextInput>
+        <TextInput  placeholder=' Enter the leave type here' keyboardType='default' style={styles.inputs} onChangeText={(value)=>{setType(value);}}></TextInput>
       </View>
       <Button text="Send Request" callback={handleSend}/>      
     

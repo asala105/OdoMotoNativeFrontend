@@ -9,12 +9,14 @@ import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 import FuelOdometerForm from '../../components/FuelOdometerForm/FuelOdometerForm';
 import api from '../../api';
+import { useSelector } from 'react-redux';
 
 export default function HomeScreen() {
     const [userType, setUserType] = useState(3);
     const [movement, setMovement] = useState({});
     const [driver, setDriver] = useState({});
     const [vehicle, setVehicle] = useState({});
+    const user = useSelector((state) => state?.user);
     function handleCancel(id){
         api.CancelFleetRequest(id)
         .then(response => {
@@ -29,6 +31,10 @@ export default function HomeScreen() {
 
     const onOpen = () => {
         modalizeRef.current?.open();
+    };
+
+    const onClose = () => {
+        modalizeRef.current?.close();
     };
 
     function getMovement(){
@@ -92,10 +98,10 @@ export default function HomeScreen() {
                             </View>
                         )
                     }} />      
-                    {userType!==3?
+                    {user?.userProfile?.user_type_id!==3?
                     <Button text="Cancel Movement Plan" callback={()=>{handleCancel(movement.id)}}/>:null}     
                 </View>
-                {userType===3 && movement!==null?
+                {user?.userProfile?.user_type_id===3?
                 <View>
                 <Portal>
                     <Modalize ref={modalizeRef} style={{ backgroundColor: colors.card_background}}>
@@ -106,7 +112,7 @@ export default function HomeScreen() {
                                 </View> 
                             </View>
                             <View>
-                                <FuelOdometerForm fleet={movement.id} vehicle={movement.vehicle_id}/>
+                                <FuelOdometerForm fleet={movement.id} vehicle={movement.vehicle_id} callback={onClose}/>
                             </View>
                         </View>
                     </Modalize>
@@ -123,7 +129,7 @@ export default function HomeScreen() {
                                 </View> 
                             </View>
                             <View>
-                                <MovementPlanForm/>
+                                <MovementPlanForm callback={onClose}/>
                             </View>
                         </View>
                     </Modalize>

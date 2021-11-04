@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "fms_react_native_frontend",
-    "slug": "fms_react_native_frontend",
+    "name": "OdoMoto",
+    "slug": "OdoMoto",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,11 +19,13 @@
     "ios": {
       "bundleIdentifier": "odo.moto",
       "googleServicesFile": "./GoogleService-Info.plist",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "buildNumber": "1.0.0"
     },
     "android": {
       "package": "odo.moto",
       "googleServicesFile": "./google-services.json",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

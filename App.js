@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { store } from './src/redux/store';
 import {updateToken} from './src/redux/slices/tokenSlice'
+import api from './src/api'
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -23,7 +24,6 @@ const App = () => {
     if (token) {
       store.dispatch(updateToken(token))
     }
-
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
     });

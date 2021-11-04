@@ -5,5 +5,6 @@ import BottomNav from './BottomNav';
 
 export default function StackSwitcher() {
     const token = useSelector((state) => state?.token);
-    return token?.tokenVal ? <BottomNav /> : <AuthNav />;
+    const user = useSelector((state) => state?.user);
+    return token?.tokenVal? <BottomNav /> : <AuthNav />;
 }

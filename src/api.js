@@ -32,6 +32,7 @@ export default{
 
     registerExpoToken: async () =>{
         let expo_token = await registerForPushNotificationsAsync();
+        registerForPushNotificationsAsync().then(token => expo_token=token);
         let token = {ExpoToken : expo_token};
         let header = await getHeader();
         let res = await axios.post(`${BASE_URL}/register_for_notifications`, token, header);

@@ -46,29 +46,25 @@ export default function Login({navigation}) {
         manager: response.data.user.manager!==null?response.data.user.manager.first_name + ' ' + response.data.user.manager.last_name:null,
         phone_nb: response.data.user.phone_nb,
         rank: response.data.user.rank,
-        user_type_id: response.data.user.date_of_birth
+        user_type_id: response.data.user.user_type_id
     }}));
-        // if (response.data.user.first_login){
-        //   api.registerExpoToken().then(response => {
-        //     console.log('token registered successfully');
-        //   }).catch(error => {
-        //     console.log('an error occurred');
-        //   });
-        // }else{
-        // navigation.replace('Home Screen');
-        // }
+    api.registerExpoToken().then(response => {
+      console.log(response.data);
+    }).catch(error => {
+      console.log(error);
+    });
       } else {
         setErrortext('Please check your email and password');
       }
     })
     .catch((error) => {
-      setErrortext('Please check your email and password');
+      setErrortext('Network Error Occurred');
       console.error(response);
     }); 
   };
 
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}  stickyHeaderIndices={[0]}>
+        <ScrollView style={styles.container} stickyHeaderIndices={[0]}>
           <Header title="Login"/>
             <ImageBackground
                 source={require('../../pictures/bg3.png')}
@@ -93,7 +89,7 @@ export default function Login({navigation}) {
                     <Text style={{ color: colors.text, fontSize: 14, fontWeight: 'normal',marginBottom:10 }}> <Icon name="user" style={{ fontSize: 16 }} />  Email address</Text>
                     <TextInput  placeholder=' Enter your email address' keyboardType='email-address' style={styles.inputs} onChangeText={(email)=>{setUserEmail(email)}}></TextInput>
                     <Text style={{ color: colors.text, fontSize: 14, fontWeight: 'normal',marginBottom:10, marginTop:5 }}> <Icon name="lock" style={{ fontSize: 16 }} />  Password</Text>
-                    <TextInput placeholder=' Enter your password' keyboardType='email-address' secureTextEntry={true} style={styles.inputs} onChangeText={(pass)=>{setUserPassword(pass)}}></TextInput>
+                    <TextInput placeholder=' Enter your password' keyboardType='default' secureTextEntry={true} style={styles.inputs} onChangeText={(pass)=>{setUserPassword(pass)}}></TextInput>
                 </View>
                 {/* error message */}
                 <View>            
@@ -136,7 +132,7 @@ const styles = StyleSheet.create({
     borderTopStartRadius: 40,
     borderTopEndRadius: 40,
     alignSelf:'stretch',
-    height:700,
+    height:500,
   },
 
   buttonView: {

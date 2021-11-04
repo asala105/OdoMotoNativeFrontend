@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView,RefreshControl } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from '../../components/Header/Header';
@@ -9,7 +9,6 @@ import { colors } from "../../constants/palette";
 import api from '../../api';
 
 export default function Notifications() {
-
   const [notifications, setNotifications] = useState('');
   const allNotifications = ()=>{
     api.getNotifications()
