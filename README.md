@@ -1,4 +1,4 @@
-## OdoMoto (the admin and HR side)
+## OdoMoto (the mobile app)
 
 The demand on fleet management systems is increasing with the growing number of businesses 
 converting to online and increased demand for advanced delivery services. Such systems allow the 
